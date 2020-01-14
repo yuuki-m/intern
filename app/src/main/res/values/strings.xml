@@ -9,6 +9,7 @@
     <string name="con_save">保存</string>
     <string name="con_delete">削除</string>
     <string name="con_web">ブラウザで開く</string>
+    <string name="con_share">共有</string>
     <string name="load_title">検索中</string>
     <string name="load_msg">お待ちください</string>
 </resources>

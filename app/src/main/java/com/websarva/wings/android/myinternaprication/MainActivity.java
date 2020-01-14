@@ -1,6 +1,7 @@
 package com.websarva.wings.android.myinternaprication;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -9,10 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView _lvArticle;
     private List<Map<String, Object>> _articleList;
+    private EditText editText;
+    private InputMethodManager inputMethodManager;
     private static final String[] FROM = {"title","URL","img"};
     private static final int[] TO = {R.id.tvArticleTitle,R.id.tvArticleURL,R.id.imArticleImg};
 
@@ -42,6 +47,27 @@ public class MainActivity extends AppCompatActivity {
         Button btClick = findViewById(R.id.button);
         ListAdd add = new ListAdd();
         btClick.setOnClickListener(add);
+
+        editText = (EditText) findViewById(R.id.editText);
+        inputMethodManager =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        editText.setOnKeyListener(new View.OnKeyListener() {
+
+            //コールバックとしてonKey()メソッドを定義
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                    //キーボードを閉じる
+                    inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),
+                            InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
     }
 
@@ -77,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         menu.add(0,0,0,R.string.con_save);
         menu.add(0,1,0,R.string.con_web);
+        menu.add(0, 2, 0, R.string.con_share);
     }
 
 
@@ -139,6 +166,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) menu.get("URL")));
                 startActivity(intent);
                 break;
+            case 2:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/html");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, menu.get("URL").toString());
+                startActivity(shareIntent);
+                break;
         }
 
         return super.onContextItemSelected(item);
@@ -164,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.show();
             ArticleSearch articlesearch = new ArticleSearch(progressDialog);
             EditText input = findViewById(R.id.editText);
+            inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
             articlesearch.setOnCallBack(new ArticleSearch.CallBackTask(){
 

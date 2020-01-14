@@ -106,6 +106,7 @@ public class SaveActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, view, menuInfo);
         menu.add(0,0,0,R.string.con_web);
         menu.add(0,1,0,R.string.con_delete);
+        menu.add(0, 2, 0, R.string.con_share);
     }
 
     @Override
@@ -136,6 +137,12 @@ public class SaveActivity extends AppCompatActivity {
                     db.close();
                 }
                 setContentView (R.layout.save_activity);
+                break;
+            case 2:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/html");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, menu.get("URL").toString());
+                startActivity(shareIntent);
                 break;
         }
         return super.onContextItemSelected(item);
