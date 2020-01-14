@@ -1,18 +1,12 @@
 package com.websarva.wings.android.myinternaprication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -25,11 +19,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
 
@@ -151,6 +144,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    private class ListItemClickListener implements AdapterView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            Map<String, Object> menu = _articleList.get(position);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) menu.get("URL")));
+            startActivity(intent);
+        }
+    }
+
     public class ListAdd implements View.OnClickListener{
         ProgressDialog progressDialog;
         @Override
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 _lvArticle.setAdapter(adapter);
+                _lvArticle.setOnItemClickListener(new ListItemClickListener());
                 registerForContextMenu(_lvArticle);
                 }
 

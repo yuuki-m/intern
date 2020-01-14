@@ -1,8 +1,5 @@
 package com.websarva.wings.android.myinternaprication;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,8 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -22,7 +17,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import java.sql.Blob;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +97,7 @@ public class SaveActivity extends AppCompatActivity {
             }
         });
         _saveArticle.setAdapter(adapter);
+        _saveArticle.setOnItemClickListener(new ListItemClickListener());
         registerForContextMenu(_saveArticle);
     }
     @Override
@@ -141,6 +139,15 @@ public class SaveActivity extends AppCompatActivity {
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private class ListItemClickListener implements AdapterView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            Map<String, Object> menu = _saveList.get(position);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) menu.get("URL")));
+            startActivity(intent);
+        }
     }
 
 
