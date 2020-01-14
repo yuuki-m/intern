@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">おすすめの記事</string>
+    <string name="tv_title">ほしい記事を入力してください</string>
+    <string name="ed_sample">サンプル</string>
+    <string name="bt_search">検索</string>
+    <string name="ops_title">ソート</string>
+    <string name="ops_savepage">保存した記事</string>
+    <string name="ops_final">終了</string>
+    <string name="con_save">保存</string>
+    <string name="con_delete">削除</string>
+    <string name="con_web">ブラウザで開く</string>
+    <string name="load_title">検索中</string>
+    <string name="load_msg">お待ちください</string>
+</resources>
